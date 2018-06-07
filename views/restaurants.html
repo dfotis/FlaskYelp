@@ -41,6 +41,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/map">Map</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sentiment">Sentiment Analysis</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -50,24 +53,8 @@
 <div class="container">
 
     <!-- Page Heading -->
-    <h1 class="my-4">Top 10 Las Vegas restaurants
-        <small>by reviews count</small>
-    </h1>
+    <h1 class="my-4">Las Vegas restaurants</h1>
     <div class="row">
-        <div class="col-md-5 order-md-1 mb-5">
-            <ul class="list-group mb-3">
-                {% for restaurant in top_10_restaurants %}
-
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div>
-                        <h6 class="my-0">{{ restaurant['name'] }}</h6>
-                    </div>
-                    <span class="text-muted">{{ restaurant['review_count'] }} ({{ restaurant['stars'] }}) </span>
-                </li>
-                {% endfor %}
-
-            </ul>
-        </div>
         <div class="card">
                 <div class="card-header">
                     Top 20 categories of Restaurants
@@ -84,12 +71,20 @@
                     <p class="card-text"><img src="data:image/png;base64,{{ month_rating_plot }}"> </p>
                 </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                Restaurant Stars
+            </div>
+            <div class="card-body">
+                <p class="card-text"><img src="data:image/png;base64,{{ restaurant_stars }}"> </p>
+            </div>
+        </div>
     </div>
 
 </div>
 
 <!-- Footer -->
-<footer class="py-5 bg-dark">
+<footer class="py-3 bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">Web Information Mining & Retrieval @ AUTh CSD</p>
     </div>

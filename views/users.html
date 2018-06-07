@@ -43,6 +43,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/map">Map</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sentiment">Sentiment Analysis</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -50,46 +53,17 @@
 
 <!-- Page Content -->
 <div class="mb-3 container">
-    <!-- Page Heading -->
-    <h1 class="my-4">5 Random customer reviews
-    </h1>
-    <div class="row">
-        {% for review in random_reviews %}
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    {{ review['user_name'] }}
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ review['restaurant_name'] }}</h5>
-                    <p class="card-text review">{{ review['text'][0:300] }}{% if review['text']|length > 300 %}...{%
-                        endif %} </p>
-                    <small class="text-muted">Posted at {{ review['date'] }}</small>
-                    <p>
-                        {% for star in range(0,review['stars']) %}
-                        <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for star in range(0,5-review['stars']) %}
-                        <i class="far fa-star"></i>
-                        {% endfor %}
-                    </p>
-                    <p class="mt-1">
-                        <span title="funny">
-                            <i class="far fa-smile"></i> {{ review['funny'] }}
-                        </span>
-                        <span class="ml-1" title="cool">
-                            <i class="far fa-thumbs-up"></i> {{ review ['cool'] }}
-                        </span>
-                        <span class="ml-1" title="useful">
-                             <i class="far fa-lightbulb"></i> {{ review ['useful'] }}
-                        </span>
-                    </p>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            User Stars
         </div>
-        {% endfor %}
-    </div>
+        <div class="card-body">
+            <p class="card-text review"><img src="data:image/png;base64,{{ usefull_users }}"> </p>
+            <small class="text-muted">Posted at TIME</small>
+        </div>
+   </div>
 </div>
+
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">

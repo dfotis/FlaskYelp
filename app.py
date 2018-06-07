@@ -1,5 +1,5 @@
-from flask import Flask, render_template, Markup, make_response
-from backend import db, plot
+from flask import Flask, render_template, Markup, make_response, request
+from backend import db, plot, model
 import pandas as pd
 import json
 
@@ -20,6 +20,7 @@ def home():
 
 @app.route("/restaurants")
 def restaurants():
+
     top_10_restaurants = db.find_top_restaurants(10)
     top_10_restaurants = list(top_10_restaurants)
 
@@ -30,15 +31,17 @@ def restaurants():
 
     random_restaurant_name = random_restaurant[0]['restaurant_name']
 
+    restaurant_stars = plot.star_ratings_by_restaurant_plot()
+
     return render_template('restaurants.html', top_10_restaurants=top_10_restaurants,
                            top_categories_plot=top_categories_plot, month_rating_plot=month_rating_plot,
-                            random_restaurant_name=random_restaurant_name)
-
+                            random_restaurant_name=random_restaurant_name, restaurant_stars = restaurant_stars)
 
 @app.route("/users")
 def customers():
-    random_reviews = db.find_random_reviews(5)
-    return render_template('users.html', random_reviews=random_reviews)
+    # random_reviews = db.find_random_reviews(5)
+    usefull_users = plot.usefull_users_plot()
+    return render_template('users.html', usefull_users=usefull_users)
 
 @app.route("/reviews")
 def reviews():
@@ -69,5 +72,24 @@ def map():
     return render_template('map.html', restaurants=restaurants, categories=categories)
 
 
+
+@app.route("/sentiment", methods=['GET', 'POST'])
+def sentiment():
+    sentiment_result = ''
+    if request.method == 'POST':  # this block is only entered when the form is submitted
+        sentence = request.form.get('sentence')
+        #framework = request.form['framework']
+        m = model.model_creation()
+
+        result = m.predict([sentence])
+        if(result[0] == 0):
+            sentiment_result = 'Sentiment: Negative'
+        else:
+            sentiment_result = 'Sentiment: Positive'
+
+        return render_template('sentiment.html', sentiment_result=sentiment_result)
+    return render_template('sentiment.html', sentiment_result='')
+
+
 if __name__ == "__main__":
-    app.run(debug=True, host='127.0.0.1', port=5110)
+    app.run(debug=True, host='127.0.0.1', port=5110, threaded=True)

@@ -166,3 +166,45 @@ def average_review_by_month(business_id):
     figdata_png = base64.b64encode(figfile.getvalue()).decode('ascii')
 
     return figdata_png
+
+def usefull_users_plot():
+    users = list(db.find_most_useful_users(5))
+
+    users_df = pd.DataFrame(users)
+
+    fig, ax = plt.subplots()
+
+    sns.barplot(y='useful', x='name', data=users_df)
+
+    ax.set_xlabel("User's Name",fontsize=8)
+    ax.set_ylabel("Useful Points")
+    ax.set_xticklabels(ax.get_xticklabels(),rotation=30)
+
+    figfile = io.BytesIO()
+
+    plt.savefig(figfile, format='png')
+    figfile.seek(0)
+    figdata_png = base64.b64encode(figfile.getvalue()).decode('ascii')
+
+    return figdata_png
+
+def star_ratings_by_restaurant_plot():
+    rest = list(db.find_10('Italian_Restaurants'))
+
+    rest_df = pd.DataFrame(rest)
+
+    fig, ax = plt.subplots()
+
+    sns.barplot(y='stars', x='name', data=rest_df)
+
+    ax.set_xlabel("Restaurant Name",fontsize=8)
+    ax.set_ylabel("Stars")
+    ax.set_xticklabels(ax.get_xticklabels(),rotation=30)
+
+    figfile = io.BytesIO()
+
+    plt.savefig(figfile, format='png')
+    figfile.seek(0)
+    figdata_png = base64.b64encode(figfile.getvalue()).decode('ascii')
+
+    return figdata_png

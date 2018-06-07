@@ -40,3 +40,10 @@ def find_random_restaurants(num):
         rest['restaurant_name'] = db['Italian_Restaurants'].find_one({'business_id': rest['business_id']})['name']
         rest['restaurant_id'] = rest['business_id']
     return random_rest
+
+
+def find_10(collection_name):
+    return db[collection_name].find({}, {'name': True, 'stars': True, '_id': False}).limit(10)
+
+def find_most_useful_users(num):
+    return db['Italian_Users'].find({}, {'name': True, 'useful': True, '_id': False}).sort([('useful', pymongo.DESCENDING)]).limit(num)
