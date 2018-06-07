@@ -11,6 +11,12 @@ def find_all(collection_name):
 def find_count(collection_name):
     return db[collection_name].find({}).count()
 
+def find_reviews_by_business_id(id):
+    return db['Italian_Reviews'].find({'business_id': id})
+
+def find_restaurant_count_by_category(category):
+    return db['restaurants'].find({'categories': category}).count()
+
 
 def find_top_restaurants(num):
     return db['Italian_Restaurants'].find({}, {'_id': False}).sort([('review_count', pymongo.DESCENDING)]).limit(num)
@@ -25,3 +31,12 @@ def find_random_reviews(num):
         review['user_name'] = db['users'].find_one({'user_id': review['user_id']})['name']
     return random_reviews
 
+
+def find_random_restaurants(num):
+    random_rest = db['Italian_Restaurants'].aggregate([{'$sample': {'size': num}}])
+    random_rest = list(random_rest)
+
+    for rest in random_rest:
+        rest['restaurant_name'] = db['Italian_Restaurants'].find_one({'business_id': rest['business_id']})['name']
+        rest['restaurant_id'] = rest['business_id']
+    return random_rest

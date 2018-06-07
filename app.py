@@ -23,7 +23,17 @@ def restaurants():
     top_10_restaurants = db.find_top_restaurants(10)
     top_10_restaurants = list(top_10_restaurants)
 
-    return render_template('restaurants.html', top_10_restaurants=top_10_restaurants)
+    top_categories_plot = plot.top_restaurant_categories()
+
+    random_restaurant = db.find_random_restaurants(1)
+    month_rating_plot = plot.average_review_by_month(random_restaurant[0]['restaurant_id'])
+
+    random_restaurant_name = random_restaurant[0]['restaurant_name']
+
+    return render_template('restaurants.html', top_10_restaurants=top_10_restaurants,
+                           top_categories_plot=top_categories_plot, month_rating_plot=month_rating_plot,
+                            random_restaurant_name=random_restaurant_name)
+
 
 @app.route("/users")
 def customers():
